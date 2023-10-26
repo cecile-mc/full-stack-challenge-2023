@@ -5,19 +5,21 @@
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading"><h1>Referrals</h1></div>
+                <div class="panel-heading">
+                    <h1>Referrals</h1>
+                </div>
 
                 <div class="panel-body">
                     <div>@include('partials.filterReferrals') @include('partials.createReferralButton')</div>
                     @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
+                    <div class="alert alert-success">
+                        {{ session('status') }}
+                    </div>
                     @endif
                     @if (session('error'))
-                        <div class="alert alert-danger">
-                            {{ session('error') }}
-                        </div>
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
                     @endif
                     <table class="table">
                         <tr>

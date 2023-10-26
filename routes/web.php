@@ -20,14 +20,14 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 //Routes for Posts
-Route::get('posts', 'PostsController@index');
-Route::post('posts', 'PostsController@store');
-Route::get('posts/create', 'PostsController@create');
-Route::get('posts/{post}', 'PostsController@show');
+// Route::get('posts', 'PostsController@index');
+// Route::post('posts', 'PostsController@store');
+// Route::get('posts/create', 'PostsController@create');
+// Route::get('posts/{post}', 'PostsController@show');
 
 //Routes for Referrals
 Route::get('referrals/upload', 'ReferralController@upload');
-Route::post('referrals/upload', 'ReferralController@processUpload');
+Route::post('referrals/upload', 'ReferralController@processUpload')->middleware('admin');
 Route::get('referrals/create', 'ReferralController@create')->name('add-referral');
 Route::get('referrals/{country?}/{city?}', 'ReferralController@index');
 Route::post('referrals', 'ReferralController@store');

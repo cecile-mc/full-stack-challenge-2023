@@ -9,9 +9,9 @@
 
                 <div class="panel-body">
                     @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
+                    <div class="alert alert-success">
+                        {{ session('status') }}
+                    </div>
                     @endif
                     @include('errors')
                     <div class="alert alert-info">
@@ -23,8 +23,8 @@
                     <form method="POST" action="/referrals/upload" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="form-group">
-                            <label for="reference_no" >Referral File : </label>
-                            <input type="file" id="referral_file" name="referral_file" class="form-control" placeholder="Click to upload"/>
+                            <label for="reference_no">Referral File : </label>
+                            <input type="file" id="referral_file" name="referral_file" class="form-control" placeholder="Click to upload" />
                         </div>
 
                         <div class="form-group">
