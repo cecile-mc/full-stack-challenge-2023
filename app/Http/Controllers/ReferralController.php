@@ -19,7 +19,6 @@ class ReferralController extends Controller
      */
     public function index($country = null, $city = null)
     {
-        // echo $country; 
 
         $countries = array();
         $cities = array();
@@ -169,30 +168,22 @@ class ReferralController extends Controller
             'note',
             'womens_evaluation'
         );
-        // echo $request->referral_file->extension();
-        // echo "<hr />";
-        // echo $request->referral_file->path();
+        
         if ($request->referral_file->extension() == "txt") {
             $file = fopen($request->referral_file->path(), "r");
             $all_data = array();
             $ctr = 0;
             $failed = array();
             while (($data = fgetcsv($file, 200, ",")) !== FALSE) {
-                // print_r($cols); 
-                // print_r($data);
                 if (count($cols) == count($data)) {
                     $arr = array_combine($cols, $data);
                     Referral::create($arr);
                     $ctr++;
                 } else {
-                    $failed[] = $data[1];
+                    $failed[] = $data[0];
                     Log::critical("Failed - data c = " . count($data) .  " field c = " . count($cols) . " => " . implode(',', $data));
                 }
-                // print_r($arr);
 
-                // break;
-                // echo "<hr />";
-                // $ctr++;
                 $request->session()->flash('status', $ctr . ' records uploaded successful!');
                 if (count($failed) > 0) {
                     $request->session()->flash('error', "Reference Nos. " . implode(',', $failed) . ' failed to upload!');
