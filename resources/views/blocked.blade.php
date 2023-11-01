@@ -13,10 +13,7 @@
                         {{ session('status') }}
                     </div>
                     @endif
-
-                    You are logged in!
-                    <hr>
-                    <a href="/users" class=""><button class="btn btn-primary">Users</button></a>
+                    You have been blocked! Please contact the administrator.
                 </div>
             </div>
         </div>

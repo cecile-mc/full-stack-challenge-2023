@@ -46,7 +46,7 @@
                         <!-- Authentication Links -->
                         @guest
                         <li><a href="{{ route('login') }}">Login</a></li>
-                        <li><a href="{{ route('register') }}">Register</a></li>
+                        <!-- <li><a href="{{ route('register') }}">Register</a></li> -->
                         @else
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
@@ -55,14 +55,14 @@
 
                             <ul class="dropdown-menu">
                                 <li>
+                                    @if(Auth::user()->status)
                                     <a href="{{ route('add-referral') }}">
                                         Add Referral
                                     </a>
-                                    <a href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                                    @endif
+                                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                         Logout
                                     </a>
-
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         {{ csrf_field() }}
                                     </form>
@@ -100,6 +100,23 @@
                 $('#referrals-table tbody tr').filter(function() {
                     $(this).toggle($(this).text().toLowerCase().indexOf(searchText) > -1);
                 });
+            });
+        });
+
+        function confirmAction(action) {
+            return window.confirm(`Are you sure you want to ${action} this user?`);
+        }
+
+        document.querySelectorAll('.confirm-action-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                const action = this.getAttribute('data-action');
+                const form = this.closest('form');
+
+                if (confirmAction(action)) {
+                    form.submit();
+                } else {
+                    e.preventDefault();
+                }
             });
         });
     </script>

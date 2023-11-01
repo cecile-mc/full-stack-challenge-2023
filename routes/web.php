@@ -33,12 +33,21 @@ Route::middleware('admin')->group(function () {
     Route::post('referrals/upload', 'ReferralController@processUpload');
 });
 
+// users route
+Route::get('users', 'AuthorsController@index')->name('users');
+Route::get('blocked', function () {
+    return view('blocked');
+})->name('blocked');
+Route::delete('users/{user}/delete', 'AuthorsController@destroy')->name('users.delete');
+Route::post('users/{user}/{action}', 'AuthorsController@userStatus')->name('users.status');
+
 Route::get('referrals/create', 'ReferralController@create')->name('add-referral');
 Route::get('referrals/{country?}/{city?}', 'ReferralController@index');
 Route::post('referrals', 'ReferralController@store');
 
 // Logged in Users
 Route::get('my-posts', 'AuthorsController@posts')->name('my-posts');
+
 
 // Routes for Authors
 Route::get('authors', 'AuthorsController@index');
