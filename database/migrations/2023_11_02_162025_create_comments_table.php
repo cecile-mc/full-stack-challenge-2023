@@ -14,10 +14,6 @@ class CreateCommentsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->text('text');
             $table->timestamps();
-
-            // Define foreign keys
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('referral_id')->references('id')->on('referrals');
         
         });
     }
