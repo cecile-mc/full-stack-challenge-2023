@@ -72,6 +72,11 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="facility_name">Facility Name: </label>
+                            <input type="text" id="facility_name" name="facility_name" class="form-control" placeholder="Facility Name" />
+                        </div>
+
+                        <div class="form-group">
                             <label for="position">Position : </label>
                             <input type="text" id="position" name="position" class="form-control" placeholder="Position" />
                         </div>
@@ -90,6 +95,32 @@
                             <label for="website">Website : </label>
                             <input type="text" id="website" name="website" class="form-control" placeholder="Website" />
                         </div>
+
+                        <div class="form-group">
+                            <label for="pills_available">Pills Available : </label>
+                            <input type="text" id="pills_available" name="pills_available" class="form-control" placeholder="Pills Available" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="type_of_service">Type of Service : </label>
+                            <input type="text" id="type_of_service" name="type_of_service" class="form-control" placeholder="Type of Servicee" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="note">Note : </label>
+                            <input type="text" id="note" name="note" class="form-control" placeholder="Note" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="code_to_use">Code to Use : </label>
+                            <input type="text" id="code_to_use" name="code_to_use" class="form-control" placeholder="Code of Use" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="womens_evaluation">Women's Evaluation : </label>
+                            <input type="text" id="womens_evaluation" name="womens_evaluation" class="form-control" placeholder="Women's Evaluation" />
+                        </div>
+
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-success">Submit</button>

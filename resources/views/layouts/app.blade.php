@@ -13,10 +13,13 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
 </head>
 
 <body>
-    <div id="app">
+    <div id=" app">
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
@@ -79,6 +82,7 @@
     </div>
 
     <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function() {
@@ -89,11 +93,10 @@
                 }
                 var divider = window.location.href.substr(-1) == '/' ? '' : '/'
                 window.location.href = window.location.origin + window.location.pathname + divider + country;
-                // console.log($("#country").val());
+
             });
         });
-    </script>
-    <script>
+
         $(document).ready(function() {
             $('#search-table').on('keyup', function() {
                 var searchText = $(this).val().toLowerCase();
@@ -119,7 +122,62 @@
                 }
             });
         });
+
+        $(document).on('click', '.open-modal', function() {
+            var url = $(this).data('url');
+            $('#commentModal .modal-body').load(url, function() {
+                $('#commentModal').modal('show');
+            });
+        });
+
+        $(document).ready(function() {
+            $('.submit-comment-button').on('click', function() {
+                var referral_id = $(this).data('referral-id');
+                var commentText = $('#comment-form-' + referral_id + ' input[name="text"]').val();
+
+                if (commentText.trim() !== '') {
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{ route('addComment') }}",
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            referral_id: referral_id,
+                            comment: commentText,
+                        },
+                        success: function(data) {
+                            $('#commentModal' + referral_id).modal('hide');
+                            location.reload();
+                        },
+                        error: function(error) {
+                            alert(error.responseJSON.message);
+                        }
+                    });
+                } else {
+                    alert('Please enter a comment before submitting.');
+                }
+            });
+        });
+
+        function passcomment(commentBody) {
+            const commentInput = document.querySelector('#commentInput');
+
+            commentInput.value = commentBody.textContent;
+        }
+        const editCommentButtons = document.querySelectorAll('#edit-comment-button');
+
+        for (const editCommentButton of editCommentButtons) {
+            editCommentButton.addEventListener('click', () => {
+                const commentForm = document.querySelector(`.comment-form`);
+                commentForm.style.display = commentForm.style.display === 'none' ? 'block' : 'none';
+            });
+        }
     </script>
+
+    <style>
+        .comment-form {
+            display: block;
+        }
+    </style>
 </body>
 
 </html>

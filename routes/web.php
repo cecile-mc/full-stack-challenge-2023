@@ -22,10 +22,10 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 // Routes for Posts
-Route::get('posts', 'PostsController@index');
-Route::post('posts', 'PostsController@store');
-Route::get('posts/create', 'PostsController@create');
-Route::get('posts/{post}', 'PostsController@show');
+// Route::get('posts', 'PostsController@index');
+// Route::post('posts', 'PostsController@store');
+// Route::get('posts/create', 'PostsController@create');
+// Route::get('posts/{post}', 'PostsController@show');
 
 // Routes for Referrals
 Route::middleware('admin')->group(function () {
@@ -44,6 +44,11 @@ Route::post('users/{user}/{action}', 'AuthorsController@userStatus')->name('user
 Route::get('referrals/create', 'ReferralController@create')->name('add-referral');
 Route::get('referrals/{country?}/{city?}', 'ReferralController@index');
 Route::post('referrals', 'ReferralController@store');
+
+// comment routes
+Route::get('comments/{referral}', 'CommentController@getComments')->name('getComments');
+Route::post('comments/', 'CommentController@addComment')->name('addComment');
+Route::put('comments', 'CommentController@updateComment')->name('updateComment');
 
 // Logged in Users
 Route::get('my-posts', 'AuthorsController@posts')->name('my-posts');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Comment;
 use App\Referral;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -22,6 +23,7 @@ class ReferralController extends Controller
 
         $countries = array();
         $cities = array();
+        $comments = Comment::all();
         $country_filter = false;
         //
         if ($country == null) {
@@ -39,7 +41,7 @@ class ReferralController extends Controller
             $cities = array($city);
         }
 
-        return view('referrals.index', compact('referrals', 'countries', 'cities'))->with('country_filter', $country_filter);
+        return view('referrals.index', compact('referrals', 'countries', 'cities', 'comments'))->with('country_filter', $country_filter);
     }
 
     /**
@@ -70,21 +72,28 @@ class ReferralController extends Controller
         ]);
         //
         Referral::create([
-            "reference_no" => request("reference_no"),
+            "reference_no" => encrypt(request("reference_no")),
             "organisation" => request("organisation"),
             "province" => request("province"),
             "district" => request("district"),
             "city" => request("city"),
-            "street_addr" => request("street_addr"),
+            "street_address" => encrypt(request("street_addr")),
             "country" => request("country"),
-            "email" => request("email"),
+            "email" => encrypt(request("email")),
             "website" => request("website"),
             "zipcode" => request("zipcode"),
             "facility_type" => request("facility_type"),
-            "gps_location" => request("gps_location"),
+            "facility_name" => request("facility_name"),
+            "gps_location" => encrypt(request("gps_location")),
             "position" => request("position"),
             "provider_name" => request("provider_name"),
-            "phone" => request("phone")
+            "phone" => encrypt(request("phone")),
+            
+            "pills_available" => request("pills_available"),
+            "code_to_use"=> request("code_to_use"),
+            "type_of_service"=> request("type_of_service"),
+            "note"=> request("note"),
+            "womens_evaluation"=> request("womens_evaluation"),
         ]);
 
         return redirect('referrals');
@@ -142,7 +151,6 @@ class ReferralController extends Controller
 
     public function processUpload(Request $request)
     {
-        // Validate file upload
         if (!$request->hasFile('referral_file') || !$request->file('referral_file')->isValid()) {
             return redirect('referrals')->with('error', 'Invalid file upload.');
         }
@@ -168,7 +176,7 @@ class ReferralController extends Controller
             'note',
             'womens_evaluation'
         );
-        
+
         if ($request->referral_file->extension() == "txt") {
             $file = fopen($request->referral_file->path(), "r");
             $all_data = array();
@@ -177,6 +185,11 @@ class ReferralController extends Controller
             while (($data = fgetcsv($file, 200, ",")) !== FALSE) {
                 if (count($cols) == count($data)) {
                     $arr = array_combine($cols, $data);
+
+                    $arr['phone'] = encrypt($arr['phone']);
+                    $arr['email'] = encrypt($arr['email']);
+                    $arr['gps_location'] = encrypt($arr['gps_location']);
+                    $arr['street_address'] = encrypt($arr['street_address']);
                     Referral::create($arr);
                     $ctr++;
                 } else {

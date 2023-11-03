@@ -1,5 +1,5 @@
 @if($country_filter == true)
-<h4>{{ head($countries) }} @if(count($cities) == 1) - {{ head($cities) }} @endif</h4>
+<h4>{{ head($countries) }} @if(count($cities) == 1) - {{ $cities[0] }} @endif</h4>
 <a class="btn btn-danger" href="{{ url('referrals/') }}">Remove filters</a>
 @endif
 @if(count($cities) > 1)

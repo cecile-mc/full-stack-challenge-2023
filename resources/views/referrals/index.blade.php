@@ -24,9 +24,13 @@
                     @endif
 
                     <div class="table-responsive">
+                        @if($referrals->isEmpty())
+                        <p>No referrals found.</p>
+                        @else
                         <table id="referrals-table" class="table table-striped table-bordered">
                             <thead>
                                 <tr>
+                                    <th>Comments</th>
                                     <th>Country</th>
                                     <th>Reference No</th>
                                     <th>Organisation</th>
@@ -40,7 +44,7 @@
                                     <th>Provider Name</th>
                                     <th>Position</th>
                                     <th>Phone</th>
-                                    <th>eMail</th>
+                                    <th>Email</th>
                                     <th>Website</th>
                                     <th>Pills Available</th>
                                     <th>Code To Use</th>
@@ -52,20 +56,24 @@
                             <tbody>
                                 @foreach($referrals as $referral)
                                 <tr>
+                                    <td style="text-align: center; vertical-align: middle;">
+                                        <span class="glyphicon glyphicon-comment open-modal" data-toggle="modal" data-target="#commentModal{{ $referral->id }}" data-url="{{ route('getComments', $referral->id) }}"></span>
+                                    </td>
+
                                     <td>{{ $referral->country }} </td>
                                     <td>{{ $referral->reference_no }} </td>
                                     <td>{{ $referral->organisation }} </td>
                                     <td>{{ $referral->province }} </td>
                                     <td>{{ $referral->district }} </td>
                                     <td>{{ $referral->city }} </td>
-                                    <td>{{ $referral->street_address }} </td>
-                                    <td>{{ $referral->gps_location }} </td>
+                                    <td>{{ decrypt($referral->street_address) }} </td>
+                                    <td>{{ decrypt($referral->gps_location) }} </td>
                                     <td>{{ $referral->facility_name }} </td>
                                     <td>{{ $referral->facility_type }} </td>
                                     <td>{{ $referral->provider_name }} </td>
                                     <td>{{ $referral->position }} </td>
-                                    <td>{{ $referral->phone }} </td>
-                                    <td>{{ $referral->email }} </td>
+                                    <td>{{ decrypt($referral->phone) }} </td>
+                                    <td>{{ decrypt($referral->email) }} </td>
                                     <td>{{ $referral->website }} </td>
                                     <td>{{ $referral->pills_available }} </td>
                                     <td>{{ $referral->code_to_use }} </td>
@@ -73,9 +81,60 @@
                                     <td>{{ $referral->note }} </td>
                                     <td>{{ $referral->womens_evaluation }} </td>
                                 </tr>
+                                <div class="modal fade" id="commentModal{{ $referral->id }}" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="commentModalLabel">Comments for Referral ID: {{ $referral->id }}</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="container">
+                                                    @foreach($comments as $comment)
+                                                    @if($comment->referral_id !== $referral->id)
+                                                    @continue
+                                                    @else
+                                                    <div class="comment">
+                                                        <div class="comment-header">
+                                                            <span class="comment-author">{{ $comment->user->name }}</span>
+                                                            <span class="comment-date">{{ $comment->updated_at->diffForHumans() }}</span>
+                                                        </div>
+                                                        <div class="comment-body">
+                                                            <p>{{ $comment->text }}</p>
+                                                        </div>
+                                                        @if(auth()->check() && auth()->user()->id === $comment->user_id)
+                                                        <div class="comment-footer">
+                                                            <button onclick="passcomment('{{ $comment->text }}')" id="edit-comment-button" class="btn btn-primary">Edit</button>
+                                                        </div>
+                                                        @endif
+                                                    </div>
+                                                    @endif
+                                                    @endforeach
+                                                    @if(auth()->check())
+                                                    <div class="comment-form" id="comment-form-{{ $referral->id }}" data-referral-id="{{ $referral->id }}">
+                                                        <input type="hidden" name="referral_id" value="{{ $referral->id }}">
+                                                        <div class="form-group">
+                                                            <label for="commentInput">Add/Edit Comment</label>
+                                                            <input name="text" id="commentInput" class="form" placeholder="Add a comment">
+                                                        </div>
+                                                        <button class="submit-comment-button btn btn-success" data-referral-id="{{ $referral->id }}">Save</button>
+                                                    </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 @endforeach
                             </tbody>
                         </table>
+                        @endif
                     </div>
                 </div>
 
@@ -87,4 +146,5 @@
         </div>
     </div>
 </div>
+
 @endsection

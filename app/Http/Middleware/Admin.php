@@ -18,6 +18,6 @@ class Admin
         if ($request->user()->role === 'admin') {
             return $next($request);
         }
-        abort(401, 'Unauthorized');
+        return redirect()->back()->with('error', "You do not have access to that page!.");
     }
 }

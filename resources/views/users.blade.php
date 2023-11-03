@@ -10,8 +10,6 @@
                 </div>
 
                 <div class="panel-body">
-                    <div>@include('partials.searchReferrals')
-                    </div>
                     @if (session('status'))
                     <div class="alert alert-success">
                         {{ session('status') }}
@@ -23,6 +21,8 @@
                     </div>
                     @endif
                     <div class="table-responsive">
+                        @include('partials.searchReferrals')
+                        <a href="/register" class="btn btn-success pull-right col-md-offset-1">Add New User</a>
                         <table id="referrals-table" class="table table-striped table-bordered">
                             <thead>
                                 <tr>
