@@ -88,12 +88,12 @@ class ReferralController extends Controller
             "position" => request("position"),
             "provider_name" => request("provider_name"),
             "phone" => encrypt(request("phone")),
-            
+
             "pills_available" => request("pills_available"),
-            "code_to_use"=> request("code_to_use"),
-            "type_of_service"=> request("type_of_service"),
-            "note"=> request("note"),
-            "womens_evaluation"=> request("womens_evaluation"),
+            "code_to_use" => request("code_to_use"),
+            "type_of_service" => request("type_of_service"),
+            "note" => request("note"),
+            "womens_evaluation" => request("womens_evaluation"),
         ]);
 
         return redirect('referrals');

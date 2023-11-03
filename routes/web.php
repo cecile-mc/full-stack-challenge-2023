@@ -28,7 +28,7 @@ Route::get('posts/create', 'PostsController@create');
 Route::get('posts/{post}', 'PostsController@show');
 
 // Routes for Referrals
-Route::middleware(['admin','supervisor' ])->group(function () {
+Route::middleware(['admin', 'supervisor'])->group(function () {
     Route::get('referrals/upload', 'ReferralController@upload');
     Route::post('referrals/upload', 'ReferralController@processUpload');
     Route::post('referrals', 'ReferralController@store');
