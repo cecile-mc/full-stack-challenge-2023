@@ -130,10 +130,12 @@
             });
         });
 
+
         $(document).ready(function() {
             $('.submit-comment-button').on('click', function() {
                 var referral_id = $(this).data('referral-id');
                 var commentText = $('#comment-form-' + referral_id + ' input[name="text"]').val();
+                var commentId = $('#comment-form-' + referral_id + ' input[name="commentId"]').val();
 
                 if (commentText.trim() !== '') {
                     $.ajax({
@@ -143,6 +145,7 @@
                             _token: '{{ csrf_token() }}',
                             referral_id: referral_id,
                             comment: commentText,
+                            commentId: commentId,
                         },
                         success: function(data) {
                             $('#commentModal' + referral_id).modal('hide');
@@ -158,16 +161,11 @@
             });
         });
 
-        function passcomment(commentBody) {
-            const commentInput = document.querySelector('#commentInput');
-
-            commentInput.value = commentBody.textContent;
-        }
         const editCommentButtons = document.querySelectorAll('#edit-comment-button');
 
         for (const editCommentButton of editCommentButtons) {
             editCommentButton.addEventListener('click', () => {
-                const commentForm = document.querySelector(`.comment-form`);
+                const commentForm = editCommentButton.closest('.modal-content').querySelector('.comment-form');
                 commentForm.style.display = commentForm.style.display === 'none' ? 'block' : 'none';
             });
         }

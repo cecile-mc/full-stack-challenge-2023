@@ -57,7 +57,7 @@
                                 @foreach($referrals as $referral)
                                 <tr>
                                     <td style="text-align: center; vertical-align: middle;">
-                                        <span class="glyphicon glyphicon-comment open-modal" data-toggle="modal" data-target="#commentModal{{ $referral->id }}" data-url="{{ route('getComments', $referral->id) }}"></span>
+                                        <span class="glyphicon glyphicon-comment open-modal" data-toggle="modal" data-target="#commentModal{{ $referral->id }}" data-url="{{ $referral->id }}"></span>
                                     </td>
 
                                     <td>{{ $referral->country }} </td>
@@ -98,30 +98,29 @@
                                                     @else
                                                     <div class="comment">
                                                         <div class="comment-header">
-                                                            <span class="comment-author">{{ $comment->user->name }}</span>
+                                                            <span class="comment-author">{{ $comment->user ? $comment->user->name : 'Anonymous' }}</span>
                                                             <span class="comment-date">{{ $comment->updated_at->diffForHumans() }}</span>
                                                         </div>
                                                         <div class="comment-body">
                                                             <p>{{ $comment->text }}</p>
                                                         </div>
-                                                        @if(auth()->check() && auth()->user()->id === $comment->user_id)
-                                                        <div class="comment-footer">
-                                                            <button onclick="passcomment('{{ $comment->text }}')" id="edit-comment-button" class="btn btn-primary">Edit</button>
-                                                        </div>
-                                                        @endif
                                                     </div>
                                                     @endif
                                                     @endforeach
-                                                    @if(auth()->check())
                                                     <div class="comment-form" id="comment-form-{{ $referral->id }}" data-referral-id="{{ $referral->id }}">
                                                         <input type="hidden" name="referral_id" value="{{ $referral->id }}">
+                                                        <input type="hidden" name="commentId" id="commentId-{{ $referral->id }}" value="{{ $referral->comments->where('user_id', auth()->id())->first()->id ?? '' }}">
                                                         <div class="form-group">
-                                                            <label for="commentInput">Add/Edit Comment</label>
-                                                            <input name="text" id="commentInput" class="form" placeholder="Add a comment">
+                                                            <label for="commentInput">Comments: </label>
+                                                            <input name="text" id="commentInput" class="form" placeholder="Add a comment" value="{{ $referral->comments->where('user_id', auth()->id())->first()->text ?? '' }}">
                                                         </div>
+                                                        @if(auth()->check() && $referral->comments->where('user_id', auth()->id())->isEmpty())
                                                         <button class="submit-comment-button btn btn-success" data-referral-id="{{ $referral->id }}">Save</button>
+                                                        @else
+                                                        <button class="submit-comment-button btn btn-primary" data-referral-id="{{ $referral->id }}">Update</button>
+                                                        @endif
                                                     </div>
-                                                    @endif
+
                                                 </div>
                                             </div>
                                             <div class="modal-footer">

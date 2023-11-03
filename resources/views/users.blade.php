@@ -34,6 +34,7 @@
                             </thead>
                             <tbody>
                                 @foreach($users as $user)
+                                @if($user->id !== auth()->id())
                                 <tr>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
@@ -58,6 +59,7 @@
                                         </form>
                                     </td>
                                 </tr>
+                                @endif
                                 @endforeach
                             </tbody>
                         </table>
