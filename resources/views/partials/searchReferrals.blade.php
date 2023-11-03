@@ -1,0 +1,1 @@
+<label for="search-table">Search:</label> <input type="text" id="search-table" placeholder="Search">
